@@ -42,6 +42,7 @@ totop.onclick = function() {
   return false;
 };
 (function(){
+    console.log(1)
     var bp = document.createElement('script');
     var curProtocol = window.location.protocol.split(':')[0];
     if (curProtocol === 'https') {
@@ -52,4 +53,5 @@ totop.onclick = function() {
     }
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(bp, s);
+    console.log(2)
 })();
