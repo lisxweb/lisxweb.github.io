@@ -115,15 +115,15 @@
 </blockquote>
 </li>
 </ul>
-<p>GET&gt;    /clinets/{&lt;\d{5}&gt;id}      Clients.index</p>
+<p>GET    /clinets/{&lt;\d{5}&gt;id}      Clients.index</p>
 <blockquote>
 <p>以下路由规则匹配2个大写字母以及3-4个数字：</p>
 </blockquote>
-<p>GET&gt;    /clinets/{&lt;[A-Z]{2}[0-9]{3,4}&gt;id}&gt; Clients.index<br>«</p>
+<p>GET    /clinets/{&lt;[A-Z]{2}[0-9]{3,4}id}&gt; Clients.index</p>
 <h2 id="3-3提供静态资源"><a href="#3-3提供静态资源" class="headerlink" title="3.3提供静态资源"></a>3.3提供静态资源</h2><h3 id="3-3-1-staticDir-mapping"><a href="#3-3-1-staticDir-mapping" class="headerlink" title="3.3.1 staticDir:mapping"></a>3.3.1 staticDir:mapping</h3><blockquote>
 <p>Play的路由配置使用特殊的Action（staticDir）将存放静态资源的public目录开放。该目录里包含的资源可以是图片，Javascript，Stylesheet等，这些资源将直接响应给客户端，并不需要服务器做进一步加工处理：</p>
 </blockquote>
-<p>GET    /public/&gt;     staticDir:public</p>
+<p>GET    /public/     staticDir:public</p>
 <blockquote>
 <p>当客户端请求/public/*路径时，Play会从应用的public文件夹中获取相应的静态资源。这里的优先级与标准路由配置一样适用。</p>
 </blockquote>
@@ -134,14 +134,9 @@
 <blockquote>
 <p>当客户端通过GET方法请求/home时，服务器将不做任何处理直接把/public/html目录下面的index.html文件返回给客户端。</p>
 </blockquote>
-<h2 id="3-4虚拟主机"><a href="#3-4虚拟主机" class="headerlink" title="3.4虚拟主机"></a>3.4虚拟主机</h2><p>Play的路由器具有主机匹配功能，当Action的变量需要从主机参数（指子域名，而不是子目录）中获取时，就显得特别有用。比如SAAS应用可以使用如下方式配置路由规则：</p>
-<p>GET    {client}.mysoftware.com/&gt;   Application.index</p>
+<h2 id="3-4虚拟主机"><a href="#3-4虚拟主机" class="headerlink" title="3.4虚拟主机"></a>3.4虚拟主机</h2><p>Play的路由器具有主机匹配功能，当Action的变量需要从主机参数（指子域名，而不是子目录）中获取时，就显得特别有用。比如SAAS应用可以使用如下方式配置路由规则：<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET    &#123;<span class="keyword">client</span>&#125;.mysoftware.com/   Application.<span class="keyword">index</span></div><div class="line">根据以上配置，框架会自动获取<span class="keyword">client</span>的值作为请求的参数：</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="keyword">index</span>(String <span class="keyword">client</span>) &#123;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <blockquote>
-<p>根据以上配置，框架会自动获取client的值作为请求的参数：</p>
-</blockquote>
-<p>public static void index(String client) {<br>    …<br>}</p>
-<blockquote>
-<p>如果在模板中使用@@{…}标签，那么框架会根据指定的条件来选择对应的路由，这种方式在很多场合下都非常实用。比如，需要在产品中使用额外的服务器来提供静态资源，则可以采用如下方式进行路由配置：<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#&#123;if play.Play.mode.isDev()&#125;</span></div><div class="line">    GET     /<span class="keyword">public</span>/    &gt;staticDir:<span class="keyword">public</span></div><div class="line"><span class="meta">#&#123;/&#125;</span></div><div class="line"><span class="meta">#&#123;else&#125;</span></div><div class="line">    GET     assets.myapp.com/       staticDir:<span class="keyword">public</span></div><div class="line"><span class="meta">#&#123;/&#125;</span></div></pre></td></tr></table></figure></p>
+<p>如果在模板中使用@@{…}标签，那么框架会根据指定的条件来选择对应的路由，这种方式在很多场合下都非常实用。比如，需要在产品中使用额外的服务器来提供静态资源，则可以采用如下方式进行路由配置：<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#&#123;if play.Play.mode.isDev()&#125;</span></div><div class="line">    GET     /<span class="keyword">public</span>/                staticDir:<span class="keyword">public</span></div><div class="line"><span class="meta">#&#123;/&#125;</span></div><div class="line"><span class="meta">#&#123;else&#125;</span></div><div class="line">    GET     assets.myapp.com/       staticDir:<span class="keyword">public</span></div><div class="line"><span class="meta">#&#123;/&#125;</span></div></pre></td></tr></table></figure></p>
 <p>对应模板中的代码如下：<br><figure class="highlight dust"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"@@</span></span></span><span class="template-variable">&#123;'/public/images/logo.png'&#125;</span><span class="xml"><span class="tag"><span class="string">"</span>&gt;</span></span></div></pre></td></tr></table></figure></p>
 <p>当应用在DEV模式下运行时，静态资源的URL为<a href="http://locahost:9000/public/images/logo.png；如果运行在PROD模式下，URL为http://assets.myapp.com/images/logo.png。" target="_blank" rel="external">http://locahost:9000/public/images/logo.png；如果运行在PROD模式下，URL为http://assets.myapp.com/images/logo.png。</a></p>
 </blockquote>
@@ -154,17 +149,10 @@
 <h2 id="3-6设置content-type"><a href="#3-6设置content-type" class="headerlink" title="3.6设置content type"></a>3.6设置content type</h2><p> Play会根据request.format设定的值，选择指定的media类型来响应HTTP请求。该值通过文件扩展名来决定使用何种视图模板进行渲染，并且通过Play框架中的mime-types.properties文件进行映射处理(映射关系详见play\framework\src\play\libs\mime-types.properties文件)，为media类型设定Content-type响应。</p>
 <p>Play请求的默认格式为html，因此index()控制器方法默认的渲染模板文件为index.html。如果需要指定其他的格式，有以下四种方式：</p>
 <p>（1）可以在程序代码调用render()方法之前进行格式设置。比如将media类型设置为text/css，就可以使用CSS文件进行渲染：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">    request.format = <span class="string">"css"</span>; </div><div class="line">    render();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>（2）推荐一种更直接的做法，直接在routes文件中使用URL来指定格式。以下列路由配置为例：首先客户端通过index.xml请求服务器，服务器端将响应格式设置为xml，最后使用index.xml模版进行渲染。</p>
 </blockquote>
-<p>GET   /index.xml    &gt;Application.index(format:’xml’)</p>
-<blockquote>
-<p>同样地，我们也可以使用CSS进行渲染：</p>
-</blockquote>
-<p>GET   /stylesheets/dynamic_css        css.SiteCSS(format:’css’)</p>
-<blockquote>
-<p>（3）Play还可以直接从URL中获取请求格式，动态指定渲染的模板类型。参考如下路由配置：</p>
-</blockquote>
-<p>GET   /index.{format}    &gt;Application.index</p>
+<p>（2）推荐一种更直接的做法，直接在routes文件中使用URL来指定格式。以下列路由配置为例：首先客户端通过index.xml请求服务器，服务器端将响应格式设置为xml，最后使用index.xml模版进行渲染。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET   /<span class="built_in">index</span>.xml    Application.<span class="built_in">index</span>(forma<span class="variable">t:</span><span class="string">'xml'</span>)</div></pre></td></tr></table></figure></p>
+<p>同样地，我们也可以使用CSS进行渲染：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET   <span class="regexp">/stylesheets/</span>dynamic_css        css.SiteCSS(<span class="string">format:</span><span class="string">'css'</span>)</div></pre></td></tr></table></figure></p>
+<p>(3）Play还可以直接从URL中获取请求格式，动态指定渲染的模板类型。参考如下路由配置：<br><figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GET   /<span class="built_in">index</span>.&#123;<span class="keyword">format</span>&#125;    Application.<span class="built_in">index</span></div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>当请求为/index.xml时，服务器会将返回格式设置为xml并使用相应的XMl文件进行渲染；请求为/index.txt时，则会使用文本进行渲染。</p>
 <p>（4）使用Play中的HTTP内容协商进行格式设置，详见下节内容。</p>
